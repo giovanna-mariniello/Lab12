@@ -88,7 +88,7 @@ class Controller:
 
         self._view.txtOut3.controls.append(ft.Text(f"Peso cammino massimo: {best_score}"))
 
-        for i in range(0, len(best_path)):
+        for i in range(0, len(best_path)-1):
             u = best_path[i]
             v = best_path[i+1]
             peso = self._model.get_peso_arco(u, v)

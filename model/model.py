@@ -69,10 +69,13 @@ class Model:
 
     def _ricorsione(self, parziale, N):
 
-        if len(parziale) == N and parziale[0] == parziale[-1]:
-            if self.get_peso_cammino(parziale) > self._bestScore:
-                self._bestPath = copy.deepcopy(parziale)
-                self._bestScore = self.get_peso_cammino(parziale)
+        if len(parziale) == N:
+            if self._grafo.has_edge(parziale[-1], parziale[0]):
+                parziale.append(parziale[0])
+                if self.get_peso_cammino(parziale) > self._bestScore:
+                    self._bestPath = copy.deepcopy(parziale)
+                    self._bestScore = self.get_peso_cammino(parziale)
+                parziale.pop()
 
             return
 
@@ -88,7 +91,10 @@ class Model:
         peso = 0
 
         for i in range(0, len(lista_nodi)-1):
-            peso += self._grafo[i][i+1]["weight"]
+            if self._grafo.has_edge(lista_nodi[i], lista_nodi[i+1]):
+                peso += self._grafo[lista_nodi[i]][lista_nodi[i+1]]["weight"]
+
+        return peso
 
     def get_peso_arco(self, u, v):
         return self._grafo[u][v]["weight"]
