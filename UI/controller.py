@@ -73,4 +73,25 @@ class Controller:
 
 
     def handle_path(self, e):
-        pass
+        lunghezza = self._view.txtN.value
+
+        try:
+            int_N = int(lunghezza)
+        except ValueError:
+            self._view.create_alert("Per favore inserisci un valore intero")
+
+        if int_N<2:
+            self._view.create_alert("Per favore inserisci un valore maggiore o uguale a 2")
+
+        self._view.txtOut3.controls.clear()
+        best_path, best_score = self._model.get_cammino_ottimo(int_N)
+
+        self._view.txtOut3.controls.append(ft.Text(f"Peso cammino massimo: {best_score}"))
+
+        for i in range(0, len(best_path)):
+            u = best_path[i]
+            v = best_path[i+1]
+            peso = self._model.get_peso_arco(u, v)
+            self._view.txtOut3.controls.append(ft.Text(f"{u} --> {v}: {peso}"))
+
+        self._view.update_page()
